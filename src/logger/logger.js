@@ -104,6 +104,10 @@ Logger.config = {
 };
 
 const logMethodFactory = function(level) {
+  if (config.levels[level].number < (config.levels[process.env.JSON_LOGGER_LOG_LEVEL] || config.levels.trace).number) {
+    return function(action, data) {};
+  }
+
   return function(action, data = {}) {
     if (!this._enabled) {
       return;
